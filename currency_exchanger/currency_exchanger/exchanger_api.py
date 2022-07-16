@@ -1,28 +1,19 @@
-from request import result
+from request import request
+import secrets
 
-# result = {
-#     "success": True,
-#     "timestamp": 1657961703,
-#     "base": "USD",
-#     "date": "2022-07-16",
-#     "rates": {
-#         "USD": 1,
-#         "BRL": 5.407804,
-#         "EUR": 0.99138,
-#         "BTC": 4.8570222e-05
-#     }
-# }
+
+request_result = request(secrets.API_TOKEN, secrets.BASE_CURRENCY_URL).json()
+rates_names = ' '.join([i for i in request_result['rates'].keys()])
 
 class Exchanger:
 
-    def __init__(self, count, currency, def_value = 1, def_currency = result['base']):
+    def __init__(self, count, currency, def_value = 1, def_currency = request_result['base']):
         self.def_val = def_value
         self.def_currency = def_currency
         self.count = count
         self.currency = currency
-        self.num_currency = result['rates'][currency]
+        self.num_currency = request_result['rates'][currency]
         self.res_exch = self.exchanger()
-
 
     def exchanger(self) -> float:
         self.res_exch = (self.def_val * self.num_currency) * self.count
@@ -31,9 +22,6 @@ class Exchanger:
     def __repr__(self):
         return f'{self.def_currency} -> {self.currency} = {self.res_exch}'
 
-
-
-rates_names = ', '.join([i for i in result['rates'].keys()])
 
 while True:
     try:
@@ -52,5 +40,3 @@ while True:
 
 exchngr = Exchanger(count, currency)
 print(exchngr)
-
-
