@@ -8,4 +8,3 @@ def request(API_TOKEN, BASE_URL):
   }
   response = requests.request("GET", BASE_URL, headers=headers, data = payload)
   return response
-
