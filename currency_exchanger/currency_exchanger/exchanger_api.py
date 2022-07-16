@@ -15,25 +15,42 @@ from request import result
 
 class Exchanger:
 
-    def __init__(self, def_value = 1, def_currency = result['base']):
+    def __init__(self, count, currency, def_value = 1, def_currency = result['base']):
         self.def_val = def_value
         self.def_currency = def_currency
-
-    def exchanger(self, count, currency):
-        try:
-            count = int(count)
-            int_currency = float(result['rates'][currency])
-        except ValueError:
-            print('Error! Chek type of count and currency(chek = int, currency = str)')
-
-        result_exch = (self.def_val * int_currency) * count
-
-        return f'{self.def_currency} -> {currency} = {result_exch}'
+        self.count = count
+        self.currency = currency
+        self.num_currency = result['rates'][currency]
+        self.res_exch = self.exchanger()
 
 
-currency = str(input('Input currency: ').upper())
-count = int(input('Input count of currency: '))
-exchngr = Exchanger()
-print(exchngr.exchanger(count, currency))
+    def exchanger(self) -> float:
+        self.res_exch = (self.def_val * self.num_currency) * self.count
+        return self.res_exch
+
+    def __repr__(self):
+        return f'{self.def_currency} -> {self.currency} = {self.res_exch}'
+
+
+
+rates_names = ', '.join([i for i in result['rates'].keys()])
+
+while True:
+    try:
+        currency = str(input('Input currency: ').upper())
+        count = int(input('Input count of currency: '))
+        if currency not in rates_names:
+            raise NameError
+        else:
+            break
+
+    except ValueError:
+        print('Error! Chek type of count and currency(count = numbers, currency = letters)')
+
+    except NameError:
+        print(f'Error! Chek name of currency({rates_names})')
+
+exchngr = Exchanger(count, currency)
+print(exchngr)
 
 
