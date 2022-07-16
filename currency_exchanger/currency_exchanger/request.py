@@ -1,12 +1,11 @@
 import requests
 import secrets
 
-payload = {}
-headers= {
-  "apikey": secrets.API_TOKEN
-}
+def request(API_TOKEN, BASE_URL):
+  payload = {}
+  headers = {
+    "apikey": API_TOKEN
+  }
+  response = requests.request("GET", BASE_URL, headers=headers, data = payload)
+  return response
 
-response = requests.request("GET", secrets.BASE_CURRENCY_URL, headers=headers, data = payload)
-
-status_code = response.status_code
-result = response.text
