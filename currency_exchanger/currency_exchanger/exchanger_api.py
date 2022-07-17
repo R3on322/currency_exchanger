@@ -2,7 +2,7 @@ from request import request
 import secrets
 
 
-request_result = request(secrets.API_TOKEN, secrets.BASE_CURRENCY_URL).json()
+request_result = request(secrets.API_TOKEN, secrets.BASE_CURRENCY_URL)
 rates_names = ' '.join([i for i in request_result['rates'].keys()])
 
 class Exchanger:

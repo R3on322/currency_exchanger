@@ -9,8 +9,8 @@ def request(API_TOKEN, BASE_URL):
     "apikey": API_TOKEN
   }
   response_eth = requests.get(secrets.URL_FOR_ETH).json()
-  response = requests.request("GET", BASE_URL, headers=headers, data = payload).json()
-  response['rates']['ETH'] = response_eth['result']['ethusd']
+  response = requests.request("GET", BASE_URL, headers = headers, data = payload).json()
+  response['rates']['ETH'] = float(response_eth['result']['ethusd'])
   return response
 
 
