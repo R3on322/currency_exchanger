@@ -1,4 +1,4 @@
-from request import request
+from currency_exchanger.request import request
 import secrets
 
 
