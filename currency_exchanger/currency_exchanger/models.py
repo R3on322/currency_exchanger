@@ -3,7 +3,7 @@ from django.db import models
 class Currency(models.Model):
 
     success = models.BooleanField()
-    def_currency = models.CharField(max_length=5)
+    def_currency = models.CharField(max_length=5, default='USD')
     last_upd_date = models.CharField(max_length=10)
     currency_values = models.CharField(max_length=255)
 
