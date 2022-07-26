@@ -15,7 +15,16 @@ class ExchangerAPI(APIView):
 
     def post(self, request):
         serializer = ExchangerSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if serializer.is_valid():
+            count_cur = request.data.get('count_cur')
+            result_cur = request.data.get('result_cur')
+            result = Exchanger(count_cur, result_cur)
+            return Response(f'result: {result}')
+        return Response(serializer.errors)
 
-        exchanger_response = Exchanger(serializer)
-        return Response(exchanger_response)
+
+# POST response in browser:
+{
+"count_cur": 2,
+"result_cur": "EUR"
+}
