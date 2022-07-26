@@ -1,41 +1,29 @@
-from .request import request
-from .secrets import API_TOKEN, BASE_CURRENCY_URL, URL_FOR_ETH
+from .models import Currency
 
-
-request_result = request(API_TOKEN, BASE_CURRENCY_URL, URL_FOR_ETH)
-rates_names = ' '.join([i for i in request_result['rates'].keys()])
 
 class Exchanger:
+    crypto_curr_list = ['ETH']
 
-    def __init__(self, count, currency, def_value = 1, def_currency = request_result['base']):
+    def __init__(self, count, currency, def_value = 1, def_currency = 'USD'):
         self.def_val = def_value
         self.def_currency = def_currency
         self.count = count
         self.currency = currency
-        self.num_currency = request_result['rates'][currency]
+        self.val_currency = to_dict_currency[currency]
         self.res_exch = self.exchanger()
 
     def exchanger(self) -> float:
-        self.res_exch = round((self.def_val / self.num_currency), 7) * self.count
+        if self.currency in self.crypto_curr_list:
+            self.res_exch = round((self.def_val / self.val_currency), 5) * self.count
+        else:
+            self.res_exch = round((self.def_val * self.val_currency), 5) * self.count
         return self.res_exch
 
     def __repr__(self):
-        return f'{self.def_currency} -> {self.currency} = {self.res_exch}'
+        return f'{self.def_currency}({self.count}) -> {self.currency}({self.res_exch})'
 
 
-while True:
-    try:
-        currency = str(input('Input currency: ').upper())
-        count = int(input('Input count of currency: '))
-        if currency not in rates_names:
-            raise NameError
-        else:
-            break
-
-    except ValueError:
-        print('Error! Chek type of count and currency(count = numbers, currency = letters)')
-
-    except NameError:
-        print(f'Error! Chek name of currency({rates_names})')
-# exchngr = Exchanger(5, "ETH")
-# print(exchngr)
+data_base = Currency.objects.all()
+currency_from_base = data_base[0].currency_values.strip("{}")
+to_dict_currency = dict((currency.replace("'","").lstrip(" "), float(value)) for currency, value in (string_cur.split(':') for string_cur in currency_from_base.split(',')))
+# print(Exchanger(2, "ETH"))

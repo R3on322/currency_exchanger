@@ -1,22 +1,30 @@
 from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import generics
-from currency_exchanger.request import request as request_currency
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from .models import Currency
-from .secrets import API_TOKEN, BASE_CURRENCY_URL
-from .serializers import CurrencySerializer
-# from .exchanger_api import Exchanger
-
-# data_base = {'success': True, 'timestamp': 1658320863, 'base': 'USD', 'date': '2022-07-20',
-#              'rates': {'BTC': 4.2338501e-05, 'EUR': 0.980695, 'USD': 1, 'BRL': 5.441598, 'ETH': 1589.04}}
+from .serializers import CurrencySerializer, ExchangerSerializer
+from .exchanger_api import Exchanger
 
 
-class CurrencyView(APIView):
+class CurrencyView(generics.ListAPIView):
+    queryset = Currency.objects.all()
+    serializer_class = CurrencySerializer
 
-    def get(self, request):
-        queryset = Currency.objects.all()
-        return Response({'Currencies': CurrencySerializer(queryset, many=True).data})
+class ExchangerAPI(APIView):
 
-    # def post(self, request):
-    #     pass
+    def post(self, request):
+        serializer = ExchangerSerializer(data=request.data)
+        if serializer.is_valid():
+            count_cur = request.data.get('count_cur')
+            result_cur = request.data.get('result_cur')
+            result = Exchanger(count_cur, result_cur)
+            return Response(f'result: {result}')
+        return Response(serializer.errors)
+
+
+# POST response in browser:
+{
+"count_cur": 2,
+"result_cur": "EUR"
+}
