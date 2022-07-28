@@ -29,8 +29,8 @@ class Exchanger:
 #  "sourceCurrency" : "BTC",
 #  "resultCurrency" : "EUR"
 # }
-
-data_base = Currency.objects.all()
-currency_from_base = data_base[0].CurrencyValues.strip("{}")
-to_dict_currency = dict((currency.replace("'","").lstrip(" "), float(value)) for currency, value in (string_cur.split(':') for string_cur in currency_from_base.split(',')))
-# print(Exchanger(2, "ETH"))
+#
+# data_base = Currency.objects.all()
+# currency_from_base = data_base[0].CurrencyValues.strip("{}")
+# to_dict_currency = dict((currency.replace("'","").lstrip(" "), float(value)) for currency, value in (string_cur.split(':') for string_cur in currency_from_base.split(',')))
+# # print(Exchanger(2, "ETH"))
