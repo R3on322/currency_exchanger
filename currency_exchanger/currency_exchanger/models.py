@@ -11,21 +11,19 @@ class Currency(models.Model):
     )
 
     class Meta:
+        db_table = 'Currency'
         managed = True
         verbose_name = 'Currency'
 
 
 class Value(models.Model):
 
-    ValueId = models.AutoField(primary_key=True)
-    USD = models.IntegerField()
-    EUR = models.IntegerField()
-    ETH = models.IntegerField()
-    BTC = models.IntegerField()
-    BRL = models.IntegerField()
+    ValueId = models.CharField(max_length=500, primary_key=True)
+    CurrencyValue = models.FloatField(max_length=500)
 
 
     class Meta:
+        db_table = 'Value'
         managed = True
         verbose_name = 'Valuer'
 
