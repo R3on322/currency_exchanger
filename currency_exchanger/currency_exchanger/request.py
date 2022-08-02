@@ -1,5 +1,5 @@
 import requests
-from secrets import API_TOKEN, BASE_CURRENCY_URL, URL_FOR_ETH
+from .secrets import API_TOKEN, BASE_CURRENCY_URL, URL_FOR_ETH
 
 def request(API_TOKEN, BASE_CURRENCY_URL):
   payload = {}
@@ -10,3 +10,4 @@ def request(API_TOKEN, BASE_CURRENCY_URL):
   response = requests.request("GET", BASE_CURRENCY_URL, headers = headers, data = payload).json()
   response['rates']['ETH'] = float(response_eth['ETH'])
   return response
+
