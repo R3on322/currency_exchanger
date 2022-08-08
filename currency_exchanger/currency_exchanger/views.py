@@ -9,6 +9,7 @@ from .requests_to_db import RequestToDB
 class CurrencyView(APIView):
 
     def get(self, request):
+        RequestToDB().data_update()
         currency_list = RequestToDB().currencyfromdb()
         #date = RequestToDB().datefromdb()             # need to fix
         return Response({"date": currency_list})
@@ -17,6 +18,7 @@ class CurrencyView(APIView):
 class ExchangerAPI(APIView):
 
     def post(self, request):
+        RequestToDB().data_update()
         serializer = ExchangerSerializer(data=request.data)
         if serializer.is_valid():
             count_cur = request.data.get('count_cur')
