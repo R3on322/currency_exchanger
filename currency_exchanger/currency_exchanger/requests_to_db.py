@@ -1,5 +1,8 @@
 import psycopg2
 from config.settings import DATABASES as db_conn
+from .request import request
+from .secrets import API_TOKEN,BASE_CURRENCY_URL
+import time
 import schedule
 
 
@@ -29,20 +32,11 @@ class RequestToDB:
 
 
     #  need to update or rework
-    def data_update(self, request):
-        for ValueId, CurrencyValue in request['rates'].items():
-            cursor = connection.cursor()
-            cursor.execute("""UPDATE public."Currency" SET "CurrencyValue" = {} WHERE "ValueId" = '{}'""".format(CurrencyValue, ValueId))
-            cursor.execute("""UPDATE public."Currency" SET "LastUpdDate" = {} WHERE "ValueId" = '{}'""".format(request['timestamp'], ValueId))
-            connection.commit()
-        cursor.close()
-        connection.close()
-        return
+    def data_update(self):
+        request_for_db = request(API_TOKEN, BASE_CURRENCY_URL)
+        for ValueId, CurrencyValue in request_for_db['rates'].items():
+            cursor = self.connection.cursor()
+            cursor.execute("""UPDATE public."Currency" SET "CurrencyValue" = {} WHERE "ValueId" = '{}'""".format(CurrencyValue,ValueId))
+            cursor.execute("""UPDATE public."Currency" SET "LastUpdDate" = {} WHERE "ValueId" = '{}'""".format(request_for_db['timestamp'], ValueId))
+            self.connection.commit()
 
-def main():
-    schedule.every().day.at('00:00').do(data_update)
-    while True:
-        schedule.run_pending()
-
-if __name__ == '__main__':
-    main()
