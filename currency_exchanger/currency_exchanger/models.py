@@ -1,13 +1,11 @@
 from django.db import models
-import datetime
-
 
 
 class Currency(models.Model):
 
     ValueId = models.CharField(max_length=500, primary_key=True)
     CurrencyValue = models.FloatField(max_length=500)
-    LastUpdDate = models.IntegerField(max_length=500)
+    LastUpdDate = models.IntegerField()
 
     class Meta:
         db_table = 'Currency'

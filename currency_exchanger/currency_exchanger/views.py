@@ -1,15 +1,18 @@
 from django.shortcuts import render
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Currency
-from .serializers import CurrencySerializer, ExchangerSerializer
+from .serializers import ExchangerSerializer
 from .exchanger_api import Exchanger
+from .requests_to_db import RequestToDB
 
 
-class CurrencyView(generics.ListAPIView):
-    queryset = Currency.objects.all()
-    serializer_class = CurrencySerializer
+class CurrencyView(APIView):
+
+    def get(self, request):
+        currency_list = RequestToDB().currencyfromdb()
+        #date = RequestToDB().datefromdb()             # need to fix
+        return Response({"date": currency_list})
+
 
 class ExchangerAPI(APIView):
 
@@ -17,9 +20,9 @@ class ExchangerAPI(APIView):
         serializer = ExchangerSerializer(data=request.data)
         if serializer.is_valid():
             count_cur = request.data.get('count_cur')
-            result_cur = request.data.get('result_cur')
+            result_cur = request.data.get('result_cur').upper()
             result = Exchanger(count_cur, result_cur)
-            return Response(f'result: {result}')
+            return Response(f'Result: {result}')
         return Response(serializer.errors)
 
 
