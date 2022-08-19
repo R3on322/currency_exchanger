@@ -1,30 +1,28 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import ExchangerSerializer
+from rest_framework.viewsets import ModelViewSet
+from .serializers import ExchangerSerializer, CurrencyViewSerializer
 from .exchanger_api import Exchanger
 from .requests_to_db import RequestToDB
+from currency_exchanger.models import Currency
 
-
-class CurrencyView(APIView):
-
-    def get(self, request):
-        RequestToDB().data_update()
-        currency_list = RequestToDB().currencyfromdb()
-        #date = RequestToDB().datefromdb()             # need to fix
-        return Response({"date": currency_list})
-
+class CurrencyView(ModelViewSet):
+    # RequestToDB().data_update()
+    queryset = Currency.objects.all()
+    serializer_class = CurrencyViewSerializer
 
 class ExchangerAPI(APIView):
 
     def post(self, request):
-        RequestToDB().data_update()
+        # RequestToDB().data_update()
         serializer = ExchangerSerializer(data=request.data)
         if serializer.is_valid():
             count_cur = request.data.get('count_cur')
             result_cur = request.data.get('result_cur').upper()
-            result = Exchanger(count_cur, result_cur)
-            return Response(f'Result: {result}')
+            val_currency = RequestToDB().currencyfromdb()[result_cur]
+            result = Exchanger(count_cur, result_cur, val_currency)
+            return Response(str(result))
         return Response(serializer.errors)
 
 

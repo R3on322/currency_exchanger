@@ -131,5 +131,8 @@ dmypy.json
 #PyCharm
 .idea
 
+#coverage
+currency_exchanger/.coverage
+
 #Secrets
 secrets.py
