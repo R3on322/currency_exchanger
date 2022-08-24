@@ -3,7 +3,7 @@ from django.db import models
 
 class Currency(models.Model):
 
-    ValueId = models.CharField(max_length=500)
+    ValueId = models.CharField(max_length=500,  primary_key=True, unique=True)
     CurrencyValue = models.FloatField(max_length=500)
     LastUpdDate = models.IntegerField()
 

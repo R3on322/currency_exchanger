@@ -1,5 +1,5 @@
 import requests
-from .secrets import API_TOKEN, BASE_CURRENCY_URL, URL_FOR_ETH
+from secrets import API_TOKEN, BASE_CURRENCY_URL, URL_FOR_ETH
 
 def request(API_TOKEN, BASE_CURRENCY_URL):
     payload = {}
