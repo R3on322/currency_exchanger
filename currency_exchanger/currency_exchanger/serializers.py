@@ -1,14 +1,15 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
 from .models import Currency
 
 
-class ExchangerSerializer(serializers.Serializer):
-    count_cur = serializers.IntegerField()
-    result_cur = serializers.CharField()
+class CurrencyViewSerializer(serializers.ModelSerializer):
 
-class CurrencyViewSerializer(ModelSerializer):
     class Meta:
         model = Currency
-        fields = ('ValueId', 'CurrencyValue')
+        fields = ('ValueId', 'CurrencyValue', 'LastUpdDate')
 
+
+class ExchangerSerializer(serializers.Serializer):
+
+    count_currency = serializers.IntegerField(min_value=1)
+    result_currency = serializers.CharField()
