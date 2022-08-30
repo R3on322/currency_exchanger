@@ -18,5 +18,19 @@ class ExchangerAPITestCase(APITestCase):
         self.assertEqual(serializer_data, response.data)
 
 #need to do
-    # def test_post(self):
-    #     pass
+    def test_post(self):
+        Currency.objects.create(ValueId="EUR", CurrencyValue=0.93, LastUpdDate=1808)
+        url = reverse('currency_exchanger')
+        response = self.client.post(url, {"count_currency": 1000, "result_currency": "EUR"})
+        expected_data = "Source Currency: USD, Source Value: 1000, Result Currency: EUR, Result Value: 930.0"
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(expected_data, response.data)
+
+    def test_post_bad_request(self):
+        Currency.objects.create(ValueId="EUR", CurrencyValue=0.93, LastUpdDate=1808)
+        Currency.objects.create(ValueId="ASD", CurrencyValue=10, LastUpdDate=2208)
+        url = reverse('currency_exchanger')
+        response = self.client.post(url, {'BTC': 'asd'})
+        expected_data = {'count_currency': ['This field is required.'],
+                         'result_currency' : ['This field is required.']}
+        self.assertEqual(expected_data, response.json())

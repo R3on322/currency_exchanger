@@ -9,7 +9,7 @@ class Exchanger:
         self.res_exch = self.exchanger()
 
     def exchanger(self) -> float:
-        self.res_exch = (self.def_val * self.val_currency) * self.count
+        self.res_exch = (self.def_val * self.val_currency) * float(self.count)
         return self.res_exch
 
     def __repr__(self):
