@@ -28,10 +28,9 @@ class ExchangerAPITestCase(APITestCase):
 
     def test_post_bad_request(self):
         Currency.objects.create(ValueId="EUR", CurrencyValue=0.93, LastUpdDate=1808)
+        Currency.objects.create(ValueId="ASD", CurrencyValue=10, LastUpdDate=2208)
         url = reverse('currency_exchanger')
-        response = self.client.post(url, {"slave": 300})
-        expected_data = {"count_currency": ["Обязательное поле."], "result_currency": ["Обязательное поле."]}
-        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
-        self.assertEqual(expected_data, response.data)
-
-
+        response = self.client.post(url, {'BTC': 'asd'})
+        expected_data = {'count_currency': ['This field is required.'],
+                         'result_currency' : ['This field is required.']}
+        self.assertEqual(expected_data, response.json())
