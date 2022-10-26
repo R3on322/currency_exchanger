@@ -136,3 +136,8 @@ currency_exchanger/.coverage
 
 #Secrets
 secrets.py
+.env
+
+#Docker
+docker-compose.yml
+Dockerfile

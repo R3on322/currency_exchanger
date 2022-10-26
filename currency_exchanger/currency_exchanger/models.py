@@ -5,7 +5,7 @@ class Currency(models.Model):
 
     ValueId = models.CharField(max_length=500, unique=True, primary_key=True)
     CurrencyValue = models.FloatField(max_length=500)
-    LastUpdDate = models.IntegerField()
+    LastUpdDate = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'Currency'

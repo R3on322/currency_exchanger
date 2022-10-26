@@ -19,14 +19,14 @@ class Command(BaseCommand):
             else:
                 print('Updating exchange rate database...')
                 for currency, value in currency_data_new.items():
-                    Currency.objects.filter(ValueId=currency).update(CurrencyValue=value, LastUpdDate=time.time())
+                    Currency.objects.filter(ValueId=currency).update(CurrencyValue=value, LastUpdDate=time.asctime())
                 self.stdout.write(self.style.SUCCESS('Courses successfully updated!'))
 
         else:
             print('Checking data from DB...')
             if not queryset:
                 for currency, value in currency_data_new.items():
-                    Currency.objects.create(ValueId=currency, CurrencyValue=value, LastUpdDate=time.time())
+                    Currency.objects.create(ValueId=currency, CurrencyValue=value, LastUpdDate=time.asctime())
                 self.stdout.write(self.style.SUCCESS('Database has been successfully filled in!'))
             else:
                 print('DB not empty! Try to update("-u")')
